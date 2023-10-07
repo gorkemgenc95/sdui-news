@@ -5,9 +5,17 @@ namespace App\Http\Controllers;
 use App\Events\NewsCreated;
 use App\Models\News;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NewsController extends Controller
 {
+
+    public function __construct()
+    {
+        // Apply the auth:sanctum middleware to specific methods
+        $this->middleware('auth:sanctum', ['only' => ['index', 'show', 'store', 'update', 'destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      */

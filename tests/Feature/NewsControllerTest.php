@@ -30,7 +30,7 @@ class NewsControllerTest extends TestCase
     {
         $this->generateNews(5);
 
-        $response = $this->get('/api/news');
+        $response = $this->actingAs($this->user)->get('/api/news');
         $news = json_decode($response->getContent(), true);
 
         $response->assertStatus(200);
@@ -46,7 +46,7 @@ class NewsControllerTest extends TestCase
     {
         $this->generateNews(20);
 
-        $response = $this->get('/api/news?page=2');
+        $response = $this->actingAs($this->user)->get('/api/news?page=2');
         $news = json_decode($response->getContent(), true);
 
         $response->assertStatus(200);
@@ -61,7 +61,7 @@ class NewsControllerTest extends TestCase
     public function testShowNews()
     {
         $news = $this->generateNews(1);
-        $response = $this->get('/api/news/' . $news->id);
+        $response = $this->actingAs($this->user)->get('/api/news/' . $news->id);
         $newsData = json_decode($response->getContent(), true);
 
         $response->assertStatus(200);
@@ -76,7 +76,7 @@ class NewsControllerTest extends TestCase
             'content' => $this->faker->paragraph,
         ];
 
-        $response = $this->postJson('/api/news', $data);
+        $response = $this->actingAs($this->user)->postJson('/api/news', $data);
 
         $response->assertStatus(201)->assertJson(['success' => true]);
         $this->assertDatabaseHas('news', $data);
@@ -94,7 +94,7 @@ class NewsControllerTest extends TestCase
             'content' => 'Updated Content',
         ];
 
-        $response = $this->put('/api/news/' . $news->id, $updatedData);
+        $response = $this->actingAs($this->user)->put('/api/news/' . $news->id, $updatedData);
         $news->refresh();
 
         $response->assertStatus(200);
@@ -105,7 +105,7 @@ class NewsControllerTest extends TestCase
     public function testDeleteNews()
     {
         $news = $this->generateNews(1);
-        $response = $this->delete('/api/news/' . $news->id);
+        $response = $this->actingAs($this->user)->delete('/api/news/' . $news->id);
         $deletedNews = News::query()->find($news->id);
 
         $response->assertStatus(204);
