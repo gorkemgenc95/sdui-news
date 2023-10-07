@@ -79,7 +79,11 @@ class NewsControllerTest extends TestCase
         $response = $this->actingAs($this->user)->postJson('/api/news', $data);
 
         $response->assertStatus(201)->assertJson(['success' => true]);
-        $this->assertDatabaseHas('news', $data);
+        $this->assertDatabaseHas('news', [
+            'title' => $data['title'],
+            'content' => $data['content'],
+            'user_id' => $this->user->id,
+        ]);
         Event::assertDispatched(NewsCreated::class, function ($event) use ($data) {
             return $event->news->title === $data['title'];
         });

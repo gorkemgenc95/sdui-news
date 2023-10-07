@@ -44,12 +44,11 @@ class NewsController extends Controller
             'title' => 'required|max:255',
             'content' => 'required',
         ]);
-        $userId = auth()->check() ? auth()->id() : 1; //config('app.admin_user_id');
 
         $news = new News();
         $news->setAttribute('title', $validatedData['title']);
         $news->setAttribute('content', $validatedData['content']);
-        $news->setAttribute('user_id', $userId);
+        $news->user()->associate($request->user());
         $news->save();
 
         event(new NewsCreated($news));
