@@ -2,10 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Events\NewsCreated;
 use App\Models\News;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
 class NewsControllerTest extends TestCase
@@ -20,6 +22,7 @@ class NewsControllerTest extends TestCase
     {
         parent::setUp();
 
+        Event::fake();
         $this->user = User::factory()->create();
     }
 
@@ -75,10 +78,11 @@ class NewsControllerTest extends TestCase
 
         $response = $this->postJson('/api/news', $data);
 
-        $response->assertStatus(201)
-        ->assertJson(['success' => true]);
-
+        $response->assertStatus(201)->assertJson(['success' => true]);
         $this->assertDatabaseHas('news', $data);
+        Event::assertDispatched(NewsCreated::class, function ($event) use ($data) {
+            return $event->news->title === $data['title'];
+        });
     }
 
     public function testUpdateNews()

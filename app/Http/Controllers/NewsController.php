@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewsCreated;
 use App\Models\News;
 use Illuminate\Http\Request;
 
@@ -42,6 +43,8 @@ class NewsController extends Controller
         $news->setAttribute('content', $validatedData['content']);
         $news->setAttribute('user_id', $userId);
         $news->save();
+
+        event(new NewsCreated($news));
 
         return response()->json(['success' => true], 201);
     }
