@@ -43,7 +43,7 @@ class NewsController extends Controller
         $news->setAttribute('user_id', $userId);
         $news->save();
 
-        return response()->json(['success' => true]);
+        return response()->json(['success' => true], 201);
     }
 
     /**
@@ -72,6 +72,6 @@ class NewsController extends Controller
         $news = News::query()->findOrFail($id);
         $news->delete();
 
-        return response()->json(['success' => true]);
+        return response()->json(['success' => true], 204);
     }
 }
