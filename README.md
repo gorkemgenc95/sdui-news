@@ -89,5 +89,5 @@ If you prefer to run the project in a Docker container:
 The project includes feature tests for CRUD endpoints and built-in authentication tests. Run the tests using:
    
 ```bash
-php artisan serve
+php artisan test
 ```
