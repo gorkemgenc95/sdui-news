@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\NewsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,9 +20,9 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/news', 'App\Http\Controllers\NewsController@index');
-    Route::post('/news', 'App\Http\Controllers\NewsController@store');
-    Route::get('/news/{id}', 'App\Http\Controllers\NewsController@show');
-    Route::put('/news/{id}', 'App\Http\Controllers\NewsController@update');
-    Route::delete('/news/{id}', 'App\Http\Controllers\NewsController@destroy');
+    Route::get('/news', [NewsController::class, 'index']);
+    Route::post('/news', [NewsController::class, 'store']);
+    Route::get('/news/{id}', [NewsController::class, 'show']);
+    Route::put('/news/{id}', [NewsController::class, 'update']);
+    Route::delete('/news/{id}', [NewsController::class, 'destroy']);
 });

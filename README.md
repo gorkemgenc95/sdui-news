@@ -7,60 +7,87 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+# News API Project
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+This Laravel-based API project allows you to manage news entries. It includes CRUD operations for news, authentication, and more. Below is a guide to set up and use the project.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Getting Started
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Follow these steps to get the project up and running on your local environment.
 
-## Learning Laravel
+### Prerequisites
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- PHP >= 8.1
+- Composer installed
+- Docker (for running in a containerized environment, optional)
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Installation
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/gorkemgenc95/sdui-news.git
 
-## Laravel Sponsors
+2. Navigate to the project directory:
+   ```bash
+   cd sdui-news
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+3. Install project dependencies:
+   ```bash
+   composer install
 
-### Premium Partners
+4. Create a .env file by copying .env.example:
+   ```bash
+   cp .env.example .env
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+5. Generate an application key:
+   ```bash
+   php artisan key:generate
 
-## Contributing
+6. Run the migrations to create the database:
+   ```bash
+   php artisan migrate
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+7. Seed the database table:
+   ```bash
+   php artisan db:seed --class=DatabaseSeeder
 
-## Code of Conduct
+8. (Optional) If you prefer to run the project in a Docker container, see the Docker section below.
+9. Start the development server:
+   ```bash
+   php artisan serve
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Usage
+This API project provides the following features:
 
-## Security Vulnerabilities
+Authentication: The project includes Laravel's default authentication for securing API routes. You can use the /register and /login endpoints to create and authenticate users.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+News Management: Use the CRUD endpoints to manage news entries.
 
-## License
+- Create a new news entry: POST /api/news
+- Retrieve all news entries: GET /api/news
+- Optionally can paginate news: GET /api/news?page=3
+- Retrieve a single news entry: GET /api/news/{id}
+- Update a news entry: PUT /api/news/{id}
+- Delete a news entry: DELETE /api/news/{id}
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+User Authentication: Authenticate your API requests by including the bearer token in the Authorization header. Use Laravel Breeze's built-in authentication or customize it based on your needs.
+
+CRON Job: A CRON job is set up to automatically delete news entries older than 14 days. It runs daily to keep your database clean.
+
+Relationships: A belongsTo relationship is established between news entries and users, using the user_id column in the News table.
+
+## Docker (Optional)
+If you prefer to run the project in a Docker container:
+
+1. Build and start the Docker image:
+   ```bash
+   docker-compose up -d --build
+
+2. Access the API at http://localhost:8080. You can update the port configuration in the docker-compose.yml file if needed.
+
+## Testing
+The project includes feature tests for CRUD endpoints and built-in authentication tests. Run the tests using:
+   
+```bash
+php artisan serve
+```
